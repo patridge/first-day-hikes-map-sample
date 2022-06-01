@@ -9,14 +9,6 @@ var map = (function () {
   var path = d3.geo.path().projection(proj);
   var currentState;
 
-  // the variable that holds our translate, centers on the netherlands
-  //var translate = proj.translate();
-  //translate[0] = -500;
-  //translate[1] = 10640
-
-  // center on the netherlands and zoom all the way in
-  //proj.translate(translate);
-  //proj.scale(60000);
   proj.translate(); // the projection's default translation
   proj.scale() // the projection's default scale
 
@@ -46,9 +38,11 @@ var map = (function () {
       });
   }
 
+  // Note: While fine for a proof-of-concept, this fairly complex Census-derived US states JSON geo data is probably way more complex than is necessary for this usage.
   d3.json("us-states-20m.json", function (mapJson) {
     d3.json("First_Day_Hikes_Report.json", function (hikesJson) {
       var hikes = hikesJson.First_Day_Hikes;
+      // Get all the states that have hikes.
       var states = _.chain(hikes)
         .map(function (hike) {
           return hike.State;
@@ -59,6 +53,7 @@ var map = (function () {
         .toArray()
         .uniq()
         .value();
+      // Highlight states with hikes on the map via CSS and add click handler.
       us.selectAll("path")
         .data(mapJson.features)
         .enter().append("path")
@@ -67,6 +62,7 @@ var map = (function () {
           return _.some(states, function (state) { return d.properties.NAME === state; });
         })
         .on("click", clicked);
+      // Build up list of all hike events.
       events.selectAll("li").data(hikes)
         .enter().append("li")
         .text(function (d) {
