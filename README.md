@@ -2,6 +2,8 @@
 
 This repo contains a sample proof-of-concept that was developed as a way to find and showcase [First Day Hikes](https://americanhiking.org/first-day-hikes/) as part of a collaboration with Wyoming State Parks and Cultural Resources.
 
+[US States selection demo using D3.js](https://gentle-mud-0168f271e.1.azurestaticapps.net/) (running in an Azure Static Web App built from this repo)
+
 > NOTE: As a sample proof-of-concept, this code should probably not be used for a production system. But feel free to use it to help learn the concepts used.
 
 ## User story
