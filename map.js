@@ -3,22 +3,22 @@
 var map = (function () {
   "use strict";
 
-  var w = 960;
-  var h = 500;
-  var proj = d3.geo.albersUsa();
-  var path = d3.geo.path().projection(proj);
+  var mapWidth = 960;
+  var mapHeight = 500;
+  var mapProjection = d3.geo.albersUsa();
+  var path = d3.geo.path().projection(mapProjection);
   var currentState;
 
-  proj.translate(); // the projection's default translation
-  proj.scale() // the projection's default scale
+  mapProjection.translate(); // the projection's default translation
+  mapProjection.scale() // the projection's default scale
 
   var svg = d3.select("#map").append("svg")
-    .attr("width", w)
-    .attr("height", h);
+    .attr("width", mapWidth)
+    .attr("height", mapHeight);
   var us = svg
     .append("g")
     .attr("id", "us");
-  var events = d3.select("#events");
+  var firstDayHikeEvents = d3.select("#events");
   var clicked = function (d) {
     var stateName = null;
     if (d && currentState !== d) {
@@ -32,7 +32,7 @@ var map = (function () {
       .classed("active", currentState && function (d) {
         return d === currentState;
       });
-    events.selectAll("li")
+    firstDayHikeEvents.selectAll("li")
       .style("display", function (d) {
         return stateName === null || d.State === stateName ? "inherit" : "none";
       });
@@ -62,8 +62,8 @@ var map = (function () {
           return _.some(states, function (state) { return d.properties.NAME === state; });
         })
         .on("click", clicked);
-      // Build up list of all hike events.
-      events.selectAll("li").data(hikes)
+      // Build up list of all hike events, attaching hike data to the element.
+      firstDayHikeEvents.selectAll("li").data(hikes)
         .enter().append("li")
         .text(function (d) {
           return d.Park + " (" + d.State + ")";
